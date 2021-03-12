@@ -121,7 +121,7 @@ class Login:
             return await cls._querySelector(page, element, retries + 1)
 
     async def _render_js_form(self, url, username, password, mfa=None):
-        browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True).launch()
+        browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]}).launch()
 
         pages = await browser.pages()
         page = pages[0]
@@ -196,7 +196,11 @@ class Login:
             exit(1)
 
         finally:
-            await browser.close()
+            try:
+                await page.close()
+                await browser.close()
+            except:
+                print("Browser not closed")
 
     @staticmethod
     def _get_aws_roles(saml_response):
