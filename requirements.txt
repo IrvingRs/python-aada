@@ -1,0 +1,8 @@
+requests
+awscli
+botocore
+boto3
+websockets==8.1
+pyee==7.0.4
+pyppeteer==0.2.2
+keyring~=18.0.0

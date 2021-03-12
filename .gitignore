@@ -1,0 +1,15 @@
+*.pyc
+
+dist/
+build/
+*.egg-info/
+.venv/
+
+.idea/
+.vscode/
+*.log
+
+.tox/
+.cache/
+.coverage
+.pytest_cache
