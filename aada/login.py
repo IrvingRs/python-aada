@@ -65,14 +65,14 @@ class Login:
         self._headless = headless
         self._config = self._session.get_scoped_config()
         self._config_writer = ConfigFileWriter()
-        self._azure_tenant_id = self._config.get('azure_tenant_id')
-        self._azure_app_id_uri = self._config.get('azure_app_id_uri')
-        self._azure_mfa = self._config.get('azure_mfa')
-        self._azure_kmsi = self._config.get('azure_kmsi', False)
-        self._azure_username = self._config.get('azure_username')
-        self._azure_password = None
-        self._session_duration = int(self._config.get('session_duration', 3600))
-        self._use_keyring = self._config.get('use_keyring')
+        self._azure_tenant_id = os.environ["azure_tenant_id"]
+        self._azure_app_id_uri = os.environ["azure_app_id_uri"]
+        self._azure_mfa = False
+        self._azure_kmsi = False
+        self._azure_username = os.environ["azure_default_username"]
+        self._azure_password = os.environ["azure_default_password"]
+        self._session_duration = 3600
+        self._use_keyring = False
         self.saml_response = None
 
         if saml_request:
@@ -277,10 +277,7 @@ class Login:
             except Exception as e:
                 print('Failed getting password from Keyring {}'.format(e))
 
-        if kr_pass is not None:
-            password_input = kr_pass
-        else:
-            password_input = getpass.getpass('Azure password: ')
+        password_input = self._azure_password
 
         asyncio.get_event_loop().run_until_complete(self._render_js_form(
             url, username_input, password_input, self._azure_mfa))
