@@ -145,25 +145,35 @@ class Login:
             else:
                 await req.continue_()
 
+        print("load url")
         await page.goto(url, waitUntil='domcontentloaded')
+        print("url loaded")
         await page.waitForSelector('input[name="loginfmt"]:not(.moveOffScreen)', {
             "visible": True
         })
+        print("loginfmt waited")
         await page.focus('input[name="loginfmt"]')
+        print("loginfmt focus")
         await page.keyboard.type(username)
+        print("typed username")
         await page.click('input[type=submit]')
+        print("click submit")
         await page.waitForSelector('input[name="Password"]:not(.moveOffScreen)', {
             "visible": True
         })
+        print("waiting for password")
         await page.focus('input[name="Password"]')
+        print("focus password")
         await page.keyboard.type(password)
+        print("type password")
         await page.click('span[class=submit]')
 
         try:
             if await self._querySelector(page, '.has-error'):
                 raise FormError
-             
+            print("final submit")
             await page.click('input[type=submit]')
+            print("done")
 
             if mfa:
                 if self._azure_mfa not in MFA_WAIT_METHODS:
