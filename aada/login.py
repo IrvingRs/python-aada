@@ -122,7 +122,8 @@ class Login:
 
     async def _render_js_form(self, url, username, password, mfa=None):
         print("before launch")
-        print(f"{Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]}).cmd}")
+        l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]})
+        print(f"{l.cmd}")
         browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]}).launch()
         print("after launch")
 
