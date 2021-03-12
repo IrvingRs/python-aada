@@ -123,7 +123,7 @@ class Login:
 
     async def _render_js_form(self, url, username, password, mfa=None):
         print("before launch")
-        socket.socket()
+        sock = socket.socket()
         print(f"socket {sock.getsockname()}")
 
         print(f"{l.cmd}")
