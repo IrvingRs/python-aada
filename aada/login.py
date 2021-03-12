@@ -137,11 +137,14 @@ class Login:
         page = pages[0]
 
         async def _saml_response(req):
+            print("saml response")
             if req.url == 'https://signin.aws.amazon.com/saml':
                 self.saml_response = parse_qs(req.postData)['SAMLResponse'][0]
+                print("saml response" + self.saml_response)
                 await req.respond({
                     'status': 200, 'contentType': 'text/plain', 'body': ''
                 })
+                print("response done")
             else:
                 await req.continue_()
 
@@ -195,7 +198,9 @@ class Login:
                 await page.click('#idBtn_Back')
 
             page.on('request', _saml_response)
+            print("sending request")
             await page.setRequestInterception(True)
+            print("intercepted")
 
             wait_time = time.time() + self._MFA_TIMEOUT
             while time.time() < wait_time and not self.saml_response:
