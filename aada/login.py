@@ -125,7 +125,8 @@ class Login:
         print("before launch")                
         l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]})
         print(f"url {l.url}")
-        browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]}).launch()
+        print(f"url {l.cmd}")
+        browser = await l.launch()
         print("after launch")
 
         print("before page")
