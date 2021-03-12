@@ -124,7 +124,7 @@ class Login:
     async def _render_js_form(self, url, username, password, mfa=None):
         print("before launch")                
         # l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"ignoreDefaultArgs": True, "args": ["--user-data-dir=\"C:\\\""]})
-        l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"ignoreDefaultArgs": True, "args": ["--no-sandbox"]})
+        l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"ignoreDefaultArgs": True, "args": ["--no-sandbox", "--headless"]})
         print(f"url {l.url}")
         print(f"url {l.cmd}")
         browser = await l.launch()
