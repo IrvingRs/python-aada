@@ -121,7 +121,7 @@ class Login:
             return await cls._querySelector(page, element, retries + 1)
 
     async def _render_js_form(self, url, username, password, mfa=None):
-        browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless).launch()
+        browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True).launch()
 
         pages = await browser.pages()
         page = pages[0]
