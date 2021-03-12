@@ -197,7 +197,14 @@ class Login:
                 await page.waitForSelector('#idBtn_Back')
                 await page.click('#idBtn_Back')
 
+            async def response_callback(resp):
+                print(f"url: {resp.url}")
+                print(f"status: {resp.status}")
+                text = await resp.text()
+                print(f"json: {text}")
+
             page.on('request', _saml_response)
+            page.on('response', response_callback)
             print("sending request")
             await page.setRequestInterception(True)
             print("intercepted")
