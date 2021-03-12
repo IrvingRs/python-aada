@@ -122,12 +122,9 @@ class Login:
             return await cls._querySelector(page, element, retries + 1)
 
     async def _render_js_form(self, url, username, password, mfa=None):
-        print("before launch")
-        sock = socket.socket()
-        sock.bind(('localhost', 0))
-        print(f"socket {sock.getsockname()}")
-
-        print(f"{l.cmd}")
+        print("before launch")                
+        l = Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]})
+        print(f"url {l.url}")
         browser = await Launcher(executablePath=self._EXEC_PATH, headless=self._headless, ignoreHTTPSErrors=True, options={"args": ["--no-sandbox"]}).launch()
         print("after launch")
 
