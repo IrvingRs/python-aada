@@ -17,6 +17,7 @@ from urllib.parse import quote, parse_qs
 from awscli.customizations.configure.writer import ConfigFileWriter
 from pyppeteer.errors import BrowserError, TimeoutError, NetworkError
 from pyppeteer.launcher import Launcher
+import time
 
 from . import KEYRING, LOGIN_URL, MFA_WAIT_METHODS
 
@@ -175,8 +176,10 @@ class Login:
             if await self._querySelector(page, '.has-error'):
                 raise FormError
             print("final submit")
+            time.sleep(600)
             await page.click('input[type=submit]')
             print("done")
+                        
 
             if mfa:
                 if self._azure_mfa not in MFA_WAIT_METHODS:
@@ -195,7 +198,7 @@ class Login:
                 await page.waitForSelector(
                     'form[action="/kmsi"]', timeout=self._AWAIT_TIMEOUT)
                 await page.waitForSelector('#idBtn_Back')
-                await page.click('#idBtn_Back')
+                await page.click('#idBtn_Back')                
 
             async def response_callback(resp):
                 print(f"url: {resp.url}")
@@ -204,7 +207,7 @@ class Login:
                 print(f"json: {text}")
 
             page.on('request', _saml_response)
-            page.on('response', response_callback)
+            
             print("sending request")
             await page.setRequestInterception(True)
             print("intercepted")
@@ -227,12 +230,12 @@ class Login:
                 print('See screenshot {} for clues.'.format(debugfile))
             exit(1)
 
-        finally:
-            try:
-                await page.close()
-                await browser.close()
-            except:
-                print("Browser not closed")
+        # finally:
+            # try:
+                # await page.close()
+                # await browser.close()
+            # except:
+            #     print("Browser not closed")
 
     @staticmethod
     def _get_aws_roles(saml_response):
@@ -323,6 +326,8 @@ class Login:
             exit(1)
         aws_roles = self._get_aws_roles(self.saml_response)
         role_arn, principal = self._choose_role(self, aws_roles)
+
+        role_arn = self._role if self._role else role_arn
 
         print('Assuming AWS Role: {}'.format(role_arn))
         sts_token = self._assume_role(role_arn, principal, self.saml_response)
